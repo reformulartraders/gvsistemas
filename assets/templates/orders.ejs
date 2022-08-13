@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <script id="font_awesome" src="https://kit.fontawesome.com/02f9ec51a7.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
+
+        :root {
+            --primary-color: #0cb50c;
+            --light-primary-color: #cdfdce;
+            --font-color: #333;
+            --color-primary: #0cb50c;
+            --color-shader-10: rgb(11, 163, 11);
+            --color-shader-20: rgb(10, 145, 10);
+            --color-shader-30: rgb(7, 109, 7);
+            --color-shader-40: rgb(5, 72, 5);
+            --color-shader-80: rgb(2, 36, 2);
+            --color-tones-10: rgb(24, 176, 24);
+            --color-tones-20: rgb(35, 170, 35);
+            --color-tones-40: rgb(58, 160, 58);
+            --color-tones-60: rgb(82, 149, 82);
+            --color-tones-80: rgb(93, 144, 93);
+            --color-tints-10: rgb(36, 188, 36);
+            --color-tints-20: rgb(61, 196, 61);
+            --color-tints-40: rgb(109, 211, 109);
+            --color-tints-60: rgb(158, 225, 158);
+            --color-tints-80: rgb(206, 240, 206);
+        }
+
+        * {
+            position: relative;
+            font-family: "Roboto", sans-serif;
+            outline: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            box-sizing: border-box;
+        }
+
+        a {
+            cursor: pointer;
+            text-decoration: none;
+            color: #000;
+        }
+
+        body {
+            color: var(--font-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #img {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        body>main {
+            padding: 20px;
+            max-width: 1080px;
+            margin: 20px auto;
+            width: 100%;
+        }
+
+        main>header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        main>header>.presentation {
+            display: flex;
+            justify-content: center;
+        }
+
+        main>header>.presentation>.infos {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main>header>.presentation>.infos>h2 {
+            margin: 0 0 10px 0;
+        }
+
+        main>header>.presentation>.infos>h2 {
+            margin: 0 0 10px 0;
+        }
+
+        main>header>.period {
+            display: flex;
+            align-items: center;
+            margin: 10px 0 25px;
+        }
+
+        main>header>.period>div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main>header>.period>div>.title {
+            font-size: 15px;
+            color: #ababab;
+        }
+
+        main>header>.period>div>.date {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        main>header>.period>i {
+            margin: 5px 20px;
+            font-size: 21px;
+            color: #ababab;
+        }
+
+        .order-infos {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin-bottom: 40px;
+            background-color: #8080800d;
+            border: 2px solid #efefef;
+        }
+
+        .order-infos>.infos {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-infos>.bottom {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .order-infos>.bottom>.left {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+
+        .order-infos>.bottom>.price {
+            display: flex;
+            flex-direction: column;
+            color: #1d1d1d;
+            text-transform: uppercase;
+            white-space: nowrap;
+            justify-content: flex-end;
+            transform: translateY(5px);
+        }
+
+        .order-infos>.bottom>.price>span.skeleton {
+            width: 150px;
+            margin-bottom: 4px;
+        }
+
+        .order-infos>.bottom>.price>div {
+            display: flex;
+        }
+
+        .order-infos>.bottom>.price th {
+            text-align: right;
+        }
+
+        .order-infos>.bottom>.price tr {
+            line-height: 13px;
+        }
+
+        .order-infos>.bottom>.price td {
+            padding-left: 20px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .order-infos>.bottom>.price tr:last-child {
+            line-height: 25px;
+            font-size: 15px;
+            color: var(--color-tones-20);
+            text-shadow: var(--color-tints-20) 0 0 10px;
+        }
+
+        .order-infos>.bottom>.price tr:last-child>td {
+            font-weight: bold !important;
+        }
+
+        .order-infos>.infos>.info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .order-infos>.infos .client_info {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            min-width: 250px;
+            gap: 15px;
+        }
+
+        .order-infos>.infos .scheduled {
+            height: fit-content;
+        }
+
+        .order-infos>.infos .client_info>.client-info.is_skeleton {
+            width: 200px;
+        }
+
+        .order-infos>.infos .client_info>.client-address.is_skeleton {
+            width: 300px;
+        }
+
+        .order-infos>.infos .created_date {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .order-infos>.infos .actions {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-infos>.infos .actions>div.integrated {
+            background: rgba(148, 148, 148, 0.1);
+            border-radius: 6px;
+            border: none !important;
+            display: flex;
+            align-items: center;
+            padding: 7px 10px !important;
+            color: gold;
+        }
+
+        .order-infos>.infos .actions>div.integrated>i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        .order-infos>.infos .actions>span {
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .order-infos>.infos .actions>div {
+            display: grid;
+            grid-template-rows: auto;
+            grid-template-columns: auto auto auto;
+            grid-gap: 5px;
+        }
+
+        .order-infos>.infos .actions button.whatsapp>i {
+            font-size: 18px;
+        }
+
+        .order-infos>.infos>.history {
+            display: flex;
+            margin: 30px 0 20px;
+            padding: 2px;
+        }
+
+        .order-infos>.infos>.history>.step {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .order-infos>.infos>.history>.step.active>.icon {
+            background-color: #1b1b1b;
+        }
+
+        .order-infos>.infos>.history>.step>.trace-line {
+            background-color: #a7a7a7;
+            height: 4px;
+            position: absolute;
+            top: 14px;
+            left: 0;
+            right: 0;
+        }
+
+        .order-infos>.infos>.history>.step:first-child>.trace-line {
+            left: 50%;
+        }
+
+        .order-infos>.infos>.history>.step:last-child>.trace-line {
+            right: 50%;
+        }
+
+        .order-infos>.infos>.history>.step>.icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 7px;
+            font-size: 17px;
+            background-color: #686868;
+            border-radius: 50px;
+            width: fit-content;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        .order-infos>.infos>.history>.step.active>.icon {
+            background-color: #1b1b1b;
+            font-size: 20px;
+        }
+
+        .order-infos>.infos>.history>.step.success>.icon {
+            background-color: var(--color-tints-20);
+            box-shadow: var(--color-tints-20) 0 0 10px;
+        }
+
+        .order-infos>.infos>.history>.step.refused>.icon {
+            background-color: #c63d3d;
+            box-shadow: #c63d3d 0 0 10px;
+        }
+
+        .order-infos>.infos>.history>.step.success+.step.active>.trace-line {
+            background: linear-gradient(to right, var(--color-tints-20), #a7a7a7);
+        }
+
+        .order-infos>.infos>.history>.step.refused>.icon {
+            font-size: 20px;
+        }
+
+        .order-infos>.infos>.history>.step.refused>.trace-line {
+            background: linear-gradient(to right, #c63d3d, #a7a7a7 50%);
+        }
+
+        .order-infos>.infos>.history>.step.refused>.trace-line::before {
+            box-shadow: #ecb0b0 0 0 4px !important;
+        }
+
+        .order-infos>.infos>.history>.step.success+.step.refused>.trace-line {
+            background: linear-gradient(to right, var(--color-tints-20), #a7a7a7 50%) !important;
+        }
+
+        .order-infos>.infos>.history>.step.success+.step.refused>.trace-line::before {
+            box-shadow: var(--color-tints-20) 0 0 2px !important;
+        }
+
+        .order-infos>.infos>.history>.step.refused>.trace-line::before {
+            position: absolute;
+            content: "";
+            display: block;
+            height: 4px;
+            left: 0;
+            right: 50%;
+            box-shadow: var(--color-tints-20) 0 0 4px;
+        }
+
+        .order-infos>.infos>.history>.step.success+.step.active>.trace-line::before {
+            position: absolute;
+            content: "";
+            display: block;
+            height: 4px;
+            left: 0;
+            right: 50%;
+            background: var(--color-tints-20);
+            box-shadow: var(--color-tints-20) 0 0 5px;
+        }
+
+        .order-infos>.infos>.history>.step.success+.step.active:last-child>.trace-line::before {
+            background: transparent !important;
+            box-shadow: var(--color-tints-20) 0 0 2px;
+        }
+
+        .order-infos>.infos>.history>.step.success>.trace-line {
+            background-color: var(--color-tints-20);
+            box-shadow: var(--color-tints-20) 0 0 5px;
+        }
+
+        .order-infos>.infos>.history>.step>.infos {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 3px;
+            text-align: center;
+        }
+
+        .order-infos>.infos>.history>.step>.infos>.title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .order-infos>.infos>.history>.step>.infos>.date {
+            font-size: 10px;
+            color: gray;
+            margin-top: 3px;
+        }
+
+        .order-infos>.infos .icon-key-value.client-address {
+            min-width: fit-content;
+        }
+
+        .order-infos .list-items {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
+            cursor: default;
+            background: rgba(166, 212, 170, 0.1);
+        }
+
+        .order-infos .list-items>.multiplication-alert {
+            background: rgba(148, 148, 148, 0.1);
+            border-radius: 6px;
+            border: none !important;
+            display: flex;
+            align-items: center;
+            padding: 7px 10px !important;
+            color: var(--color-tones-20);
+        }
+
+        .order-infos .list-items>.multiplication-alert>i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        .order-infos .list-items>.multiplication-alert {
+            background: rgba(148, 148, 148, 0.1);
+            border-radius: 6px;
+            border: none !important;
+            display: flex;
+            align-items: center;
+            padding: 7px 10px !important;
+            color: var(--color-tones-20);
+        }
+
+        .order-infos .list-items>.multiplication-alert>i {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        .order-infos .list-items>.list-title {
+            display: flex;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            gap: 15px;
+            margin-right: 4px;
+            border-bottom: 1px solid rgba(162, 162, 162, 0.2);
+            padding-bottom: 10px;
+            color: var(--color-tones-20);
+        }
+
+        .order-infos .list-items>.list-title>.name {
+            flex: 1;
+        }
+
+        .order-infos .list-items>div>header,
+        .order-infos .list-items>div>main>div {
+            display: flex;
+            align-items: center;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+
+        .order-infos .list-items>div>main {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-infos .list-items>div:not(:last-child) {
+            border-bottom: 1px dashed rgba(162, 162, 162, 0.2);
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+
+        .order-infos .list-items>div>.observation {
+            margin-left: 35px;
+            font-size: 11px;
+            color: goldenrod;
+            position: relative;
+            top: -7px;
+            margin-bottom: 5px;
+            margin-right: 15%;
+            max-height: 40px;
+            overflow-y: auto;
+        }
+
+        .order-infos .list-items>div>header {
+            padding: 5px 0;
+            font-size: 14px;
+        }
+
+        .order-infos .list-items>div>header>.quantity {
+            min-width: 30px;
+            margin-right: 5px;
+            text-align: center;
+        }
+
+        .order-infos .list-items>div>header>.price,
+        .order-infos .list-items>div>main>div>.price {
+            min-width: 40px;
+            margin-left: 10px;
+            text-align: right;
+        }
+
+        .order-infos .list-items>div>header>.name,
+        .order-infos .list-items>div>main>div>.name {
+            flex: 1;
+        }
+
+        .order-infos .list-items>div>main>div {
+            margin-left: 35px;
+            border-bottom: 1px dotted rgba(162, 162, 162, 0.2);
+        }
+
+        .order-infos .list-items>div>main>div:last-child {
+            border-bottom: 0;
+        }
+
+        .order-infos .list-items>div>main>div>.quantity {
+            min-width: 25px;
+            margin-right: 10px;
+        }
+
+        .order-infos .list-items.is_multiplication>div>main>div>.quantity {
+            color: var(--color-tones-20);
+        }
+
+        .order-infos .list-items>div>header>.name {
+            font-weight: bold;
+        }
+
+        .icon-key-value {
+            display: flex;
+            align-items: center;
+            border-radius: 6px;
+            background: rgba(147, 185, 150, 0.1);
+            padding: 10px 15px 10px;
+        }
+
+        .icon-key-value>.rounded-icon {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            border-radius: 50%;
+            background-color: var(--color-tints-80);
+            color: var(--color-shader-10);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-key-value>.infos {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-left: 15px;
+            gap: 3px;
+        }
+
+        .icon-key-value>.infos>.title {
+            font-size: 12px;
+            color: #6b6b6b;
+            white-space: nowrap;
+            width: fit-content;
+        }
+
+        .icon-key-value>.infos>.name {
+            font-size: 14px;
+            font-weight: 700;
+            width: fit-content;
+        }
+
+        .icon-key-value.delivery-type .value {
+            color: black;
+        }
+
+        .icon-key-value>span {
+            font-weight: bold;
+        }
+
+        .icon-key-value>.infos {
+            max-height: 100px;
+            overflow: auto;
+        }
+
+        .order-print-options,
+        .order-infos .mobile-header {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <header>
+            <div class="presentation">
+                <img id="img" src="<%= company.image?.medium  || `${api_url}/static/images/pop-black-icon.jpg` %>">
+                <div class="infos">
+                    <h2>Relatório de pedidos</h2>
+                    <span><b id="orders_count">0</b> pedidos</span>
+                </div>
+            </div>
+            <div class="period">
+                <div class="from">
+                    <span class="title">De</span>
+                    <span class="date"></span>
+                </div>
+                <i class="fas fa-arrow-right"></i>
+                <div class="to">
+                    <span class="title">Até</span>
+                    <span class="date"></span>
+                </div>
+            </div>
+        </header>
+        <div id="list-orders"></div>
+    </main>
+    <script>
+        const orders = JSON.parse(decodeURIComponent(`<%- encodeURIComponent(JSON.stringify(orders)) %>`));
+        const company = JSON.parse(decodeURIComponent(`<%- encodeURIComponent(JSON.stringify(company)) %>`));
+        const range_dates = JSON.parse(decodeURIComponent(`<%- encodeURIComponent(JSON.stringify(range_dates)) %>`));
+        const domain = JSON.parse(decodeURIComponent(`<%- encodeURIComponent(JSON.stringify(domain)) %>`));
+        const api_url = JSON.parse(decodeURIComponent(`<%- encodeURIComponent(JSON.stringify(api_url)) %>`));
+
+        function loadedChecker() {
+            const imagesHaveLoaded = () => { return Array.from(document.images).every((i) => i.complete); }
+
+            const interval = setInterval(() => {
+                if (imagesHaveLoaded()) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        window.finished = true;
+                    }, 50);
+                }
+            }, 10);
+        }
+
+        function MoneyFormat(money, is_currency = true, fractionDigits = 2) {
+            let money_str = new Intl.NumberFormat("pt-BR", {
+                style: is_currency ? "currency" : "decimal",
+                currency: 'BRL',
+                minimumFractionDigits: fractionDigits,
+                maximumFractionDigits: fractionDigits
+            }).format(money);
+
+            return money_str;
+        }
+
+        function isElectron() { return true; }
+
+
+        function LoadOrderOnElement($element, order, actions = true) {
+            const $order_infos = $(`
+            <div class="mobile-header">
+                <button class="back">
+                    <i class="fas fa-angle-left"></i>
+                    Voltar
+                </button>
+            </div>
+            <div class="infos">
+                <div class="info">
+                    <div class="client_info">
+                        <div class="icon-key-value order-identifier">
+                            <div class="rounded-icon"><i class="fas fa-pizza-slice"></i></div>
+                            <div class="infos">
+                                <span class="title">Pedido</span>
+                                <a class="value" target="_blank"></a>
+                            </div>
+                        </div>
+                        <div class="icon-key-value client-info">
+                            <div class="rounded-icon"><i class="fas fa-user"></i></div>
+                            <div class="infos">
+                                <span class="name"></span>
+                                <span class="phone"></span>
+                            </div>
+                        </div>
+                        <div class="scheduled icon-key-value">
+                            <div class="rounded-icon"><i class="far fa-clock"></i></div>
+                            <div class="infos">
+                                <span class="name">Agendado para</span>
+                                <span class="time"></span>
+                            </div>
+                        </div>
+                        <div class="icon-key-value client-address">
+                            <div class="rounded-icon"><i class="fas fa-motorcycle"></i></div>
+                            <div class="infos">
+                                <span class="title">Endereço</span>
+                                <a class="address" target="_blank"></a>
+                                <span class="complement"></span>
+                                <span class="reference"></span>
+                            </div>
+                        </div>
+                        <div class="icon-key-value delivery-type">
+                            <div class="rounded-icon"><i class="fas fa-motorcycle"></i></div>
+                            <div class="infos">
+                                <span class="title">Tipo</span>
+                                <span class="value">Retirada1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <div>
+                            <button type="button" class="btn btn-success accept">
+                                <span>Aceitar1</span>
+                                <div class="spinner-border"></div>
+                            </button>
+                            <button type="button" class="btn btn-danger refuse">
+                                <span>Recusar1</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary print">
+                                <span>Impressão1</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>Mensagem</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="history">
+                    <div class="step accept">
+                        <div class="trace-line"></div>
+                        <div class="icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="infos">
+                            <span class="title"></span>
+                            <span class="date"></span>
+                        </div>
+                    </div>
+                    <div class="step production">
+                        <div class="trace-line"></div>
+                        <div class="icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="infos">
+                            <span class="title"></span>
+                            <span class="date"></span>
+                        </div>
+                    </div>
+                    <div class="step delivery">
+                        <div class="trace-line"></div>
+                        <div class="icon">
+                            <i class="fas fa-forward"></i>
+                        </div>
+                        <div class="infos">
+                            <span class="title"></span>
+                            <span class="date"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-items"></div>
+            </div>
+            <div class="bottom">
+                <div class="left">
+                    <div class="icon-key-value payment-method">
+                        <div class="rounded-icon"><i class="far fa-credit-card"></i></div>
+                        <div class="infos">
+                            <span class="title">Pagamento</span>
+                            <span class="value"></span>
+                        </div>
+                    </div>
+                    <div class="icon-key-value cash-change">
+                        <div class="rounded-icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="infos">
+                            <span class="title">Troco para10</span>
+                            <span class="value"></span>
+                        </div>
+                    </div>
+                    <div class="icon-key-value discount-coupon">
+                        <div class="rounded-icon"><i class="fas fa-tag"></i></div>
+                        <div class="infos">
+                            <span class="title">Cupom de desconto</span>
+                            <span class="value"></span>
+                        </div>
+                    </div>
+                    <div class="icon-key-value observations">
+                        <div class="rounded-icon"><i class="fas fa-info-circle"></i></div>
+                        <div class="infos">
+                            <span class="title">Observações</span>
+                            <span class="value"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="price">
+                    <table>
+                        <tr>
+                            <th>Subtotal</th>
+                            <td class="subtotal"></td>
+                        </tr>
+                        <tr class="discount">
+                            <th>Desconto</th>
+                            <td class="discount"></td>
+                        </tr>
+                        <tr>
+                            <th>Taxa de entrega</th>
+                            <td class="frete"></td>
+                        </tr>
+                        <tr class="coupon_discount">
+                            <th>Cupom de desconto</th>
+                            <td class="coupon_discount"></td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td class="total"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>`);
+
+            let $print_options = $("body>.order-print-options");
+
+            $element.addClass("order-infos");
+
+            $element.html($order_infos);
+
+            $print_options.remove();
+
+            $element.find(">.infos .actions>div>button").removeClass("loading").show();
+            $element.find(">.infos .actions .whatsapp").toggle(!isElectron() && (order.status < 0 || [1, 3, 10].includes(order.status)));
+
+            $print_options = $(`<div class="order-print-options">
+                <div>
+                    <header>
+                        <h4>Impressão</h4>
+                        <button class="close btn btn-danger"><i class="fas fa-times"></i></button>
+                    </header>
+                    <main>
+                        <div value="control">
+                            <img src="/images/box-analytics.png" />
+                            <span>Controle</span>
+                        </div>
+                        <div value="production">
+                            <img src="/images/box-todo.png" />
+                            <span>Produção</span>
+                        </div>
+                        <div value="delivery">
+                            <img src="/images/box-delivery.png" />
+                            <span>Entrega</span>
+                        </div>
+                    </main>
+                </div>
+            </div>`);
+
+            if (order.items.every(item => !item.product.id_printer) && isElectron()) $print_options.find(`[value="production"]`).addClass("disabled");
+
+            $print_options.find(".close").on("click", function () {
+                $print_options.fadeOut(300);
+            });
+
+            $print_options.on("mousedown", function () {
+                $print_options.fadeOut(300);
+            });
+
+            $print_options.find(">div").on("mousedown", function (e) {
+                e.stopPropagation();
+            });
+
+            function printCopy(type, printer_device, order) {
+                if (isElectron()) {
+                    if (type === "control") {
+                        printService.printControlCopy(printer_device, order, company);
+                    } else if (type === "delivery") {
+                        printService.printDeliveryCopy(printer_device, order, company);
+                    } else if (type === "production") {
+                        const printer_items = [];
+
+                        for (const item of order.items || []) {
+                            if (!item.product.id_printer) continue;
+
+                            if (printer_items[item.product.id_printer]) printer_items[item.product.id_printer].push(item);
+                            else printer_items[item.product.id_printer] = [item];
+                        }
+
+                        for (const id_printer in printer_items) {
+                            const printer = {
+                                ...printer_device,
+                                ...printers.find(printer => printer.id_printer == id_printer),
+                            };
+
+                            printer.device = GetLocalPrinter(id_printer) || printer.device;
+                            order.items = printer_items[id_printer];
+
+                            printService.printProductionCopy(printer, order, company);
+                        }
+                    }
+                } else {
+                    $("iframe.printing").remove();
+
+                    const newIframe = document.createElement("iframe");
+                    newIframe.width = 0;
+                    newIframe.height = 0;
+                    newIframe.className = "printing";
+
+                    newIframe.src = `${api_url}/order/${order.secret_id_order}/printing/${type}`;
+
+                    document.body.appendChild(newIframe);
+                }
+            }
+
+            $print_options.find("main>div").on("click", function () {
+                const value = $(this).attr("value");
+
+                const order_data = { ...order };
+                order_data.address = order.delivery_type !== "withdrawal" ? `${order.street_name}, ${order.street_number} - ${order.neighborhood}, ${order.city} - ${order.state}` : null;
+                order_data.dt_accept = new Date(order.dt_accept).toISOString();
+
+                const primary_printer_device = {
+                    ...primary_printer,
+                    device: GetLocalPrinter(primary_printer?.id_printer) || primary_printer?.device,
+                };
+
+                printCopy(value, primary_printer_device, order_data);
+
+                $print_options.fadeOut(200);
+            });
+
+            $order_infos.find(".actions>div>.print").on("click", function () {
+                $print_options.fadeIn(300).css("display", "flex");
+            });
+
+            $("body").append($print_options);
+
+            if (!isElectron()) $element.find(">.infos .actions .whatsapp").click(function () {
+                SendOrderStatusMessage(order);
+            });
+
+            order.address = order.delivery_type !== "withdrawal" ? `${order.street_name}, ${order.street_number} - ${order.neighborhood}, ${order.city} - ${order.state}` : null;
+
+            $element.find(".order-identifier .value").text(`#${order.order_company_sequence}`)
+                .attr("href", `https://${company.subdomain}.${domain}/pedido/${order.secret_id_order}`);
+
+            $element.find(".client-info .name").text(order.name_client);
+            $element.find(".client-info .phone").text(order.phone_client);
+
+            $element.find(".client-address").toggle(order.delivery_type !== "withdrawal");
+            $element.find(".client-address .address").text(`${order.address} ${order.suplier || ""}`)
+                .attr("href", `https://maps.google.com/maps?q=${order.address}&hl=pt-BR;z=14&amp;output=embed`);
+
+            $element.find(".client-address .complement").text(order.complement)
+            $element.find(".client-address .reference").text(order.reference)
+
+            $element.find(".delivery-type").toggle(order.delivery_type === "withdrawal");
+
+            if (!!order.scheduledAt) {
+                $element.find(".scheduled>.infos>.time").text(new Date(order.scheduledAt).toLocaleDateString("pt-BR", { hour: '2-digit', minute: '2-digit' }));
+            } else {
+                $element.find(".scheduled").hide();
+            }
+
+            const $list_items = $element.find(".list-items");
+
+            $list_items.empty();
+
+            $list_items.toggleClass("is_multiplication", company.multiply_complements);
+
+            $list_items.append(`<header class="list-title">
+                <span class="quantity">Qtde</span>
+                <span class="name">Produto</span>
+                <span class="total">Subtotal (R$)</span>
+            </header>`);
+
+            if (company.multiply_complements && (order.items.some(item => item.complements?.length > 0) || order.items.some(item => item.pizza_flavors?.length > 1))) {
+                $list_items.append(`<div class="multiplication-alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Os sabores e complementos estão sendo multiplicados!</span>
+                </div>`);
+            }
+
+            for (const item of order.items || []) {
+                const {
+                    product,
+                    complements,
+                    pizza_flavors,
+                    pizza_price_rule,
+                } = item;
+
+                if (!product) continue;
+
+                const $product = $(`
+                    <div>
+                        <header>
+                            <span class="quantity"></span>
+                            <span class="name">
+                                <span></span>
+                                <small></small>
+                            </span>
+                            <span class="price"></span>
+                        </header>
+                    </div>
+                `);
+
+                if (item.observation) {
+                    const $observation = $(`<div class="observation">
+                        <span class="title">Observação:</span>
+                        <span class="text">Nenhum</span>
+                    </div>`);
+
+                    $observation.find(".text").text(item.observation);
+
+                    $product.append($observation);
+                }
+
+                const $main = $("<main>");
+
+                for (const flavor of pizza_flavors || []) {
+                    const $optional = $(`<div>
+                        <span class="quantity"></span>
+                        <span class="name"></span>
+                        <span class="price"></span>
+                    </div>`);
+
+                    const total_flavors = item.pizza_flavors.reduce((accumulator, flavor) => accumulator + flavor.quantity, 0);
+
+                    $optional.find(".quantity").text(pizza_flavors.length > 1 ? `${flavor.quantity}/${total_flavors}` : `${(company.multiply_complements ? flavor.quantity * item.quantity : flavor.quantity) || 1} x`);
+
+                    $optional.find(".name").text(`Sabor ${flavor.name}`);
+                    $optional.find(".price").attr("title", `Valor unitário: ${MoneyFormat(flavor.price)}\nValor total: ${MoneyFormat(flavor.price * flavor.quantity)}`);
+
+                    product.pizza_price_rule = pizza_price_rule || product.pizza_price_rule;
+
+                    if (product.pizza_price_rule === "average") {
+                        $optional.find(".price").text(MoneyFormat((flavor.price / total_flavors) * flavor.quantity, false));
+                    } else if (product.pizza_price_rule === "biggest_price") {
+                        const biggest_price = Math.max(...item.pizza_flavors.map(item => item.price));
+
+                        $optional.find(".price").text(MoneyFormat((biggest_price / total_flavors) * flavor.quantity, false));
+                    } else {
+                        $optional.find(".price").text(MoneyFormat(flavor.price * flavor.quantity, false));
+                    }
+
+                    $main.append($optional);
+                }
+
+                for (const complement of complements || []) {
+                    for (const complement_item of complement.items || []) {
+                        const $optional = $(`<div>
+                            <span class="quantity"></span>
+                            <span class="name"></span>
+                            <span class="price"></span>
+                        </div>`);
+
+                        $optional.find(".quantity").text(`${complement.required === false ? "+ " : ""}${(company.multiply_complements ? complement_item.quantity * item.quantity : complement_item.quantity) || 1} x`);
+
+                        $optional.find(".name").text(complement_item.name);
+                        $optional.find(".price")
+                            .text(MoneyFormat(complement_item.price * complement_item.quantity * item.quantity, false))
+                            .attr("title", `Valor unitário: ${MoneyFormat(complement_item.price)}\nValor total: ${MoneyFormat(complement_item.price * complement_item.quantity * item.quantity)}`);
+
+                        $main.append($optional);
+                    }
+                }
+
+                $product.find(".quantity").text(`${item.quantity || 1} x`);
+
+                $product.find(".name>span").text(product.name);
+
+                if (product.is_pizza) {
+                    let pizza_price_rule = "?";
+
+                    if (product.pizza_price_rule === "average") pizza_price_rule = "Média dos sabores";
+                    if (product.pizza_price_rule === "biggest_price") pizza_price_rule = "Sabor mais caro";
+
+                    $product.find(".name>small").text(`(${pizza_price_rule})`);
+                }
+
+                $product.find(".name>small").text("");
+                $product.find(".price")
+                    .text(MoneyFormat(item.price * item.quantity, false))
+                    .attr("title", `Valor unitário: ${MoneyFormat(product.price)}\nValor total: ${MoneyFormat(item.price * item.quantity)}`);
+
+                $product.append($main);
+
+                $list_items.append($product);
+            }
+
+            $element.find(".price .subtotal").text(MoneyFormat(order.subtotal));
+            $element.find(".price .frete").text(MoneyFormat(order.delivery_cost));
+
+            $element.find(".price tr.discount").toggle(order.discount > 0);
+            $element.find(".price td.discount").text(MoneyFormat(order.discount));
+
+            $element.find(".price tr.coupon_discount").toggle(order.coupon_discount > 0);
+            $element.find(".price td.coupon_discount").text(MoneyFormat(order.coupon_discount));
+
+            $element.find(".price .total").text(MoneyFormat(order.total));
+
+            $element.find(".bottom .observations").toggle(!!order.observation);
+            $element.find(".bottom .observations .value").text(order.observation);
+
+            let text_payment_method = {
+                money: "Dinheiro",
+                credit: "Cartão de Crédito",
+                debit: "Cartão de Débito",
+                meal_ticket: "Vale Refeição",
+                pix: "Pix",
+                online_credit: "Online (Crédito)",
+                online_debit: "Online (Débito)",
+                online_pix: "Online (Pix)",
+            }[order.payment_method] || "Unknown";
+
+            $element.find(".bottom .payment-method .value").text(text_payment_method);
+
+            $element.find(".bottom .cash-change").toggle(!!order.cash_change);
+            $element.find(".bottom .cash-change .value").text(MoneyFormat(order.cash_change));
+
+            $element.find(".bottom .discount-coupon").toggle(!!order.discount_coupon);
+            if (!!order.discount_coupon) {
+                $element.find(".bottom .discount-coupon .value").text(`${order.discount_coupon.coupon} (${order.discount_coupon.is_percentual ? `${order.discount_coupon.discount}%` : MoneyFormat(order.discount_coupon.discount)} OFF)`);
+            }
+
+            $element.find(".history>.step").removeClass("active").removeClass("success").removeClass("refused");
+            $element.find(".history>.step .title").text("");
+            $element.find(".history>.step .date").text("");
+
+            const status = order.status > -1 ? order.status : Math.abs(order.status + 1);
+
+            if (status == 0) {
+                $element.find(">.infos .actions .accept>span").text("Aceitar");
+                $element.find(">.right>.infos .actions .refuse>span").text("Recusar");
+
+                $element.find(".history>.step.accept").addClass("active");
+
+                $element.find(".history>.step.accept .title").text("Aguardando aceite");
+                $element.find(".history>.step.production .title").text("Aguardando produção");
+                $element.find(".history>.step.delivery .title").text("Aguardando entrega");
+            } else if (status == 1) {
+                $element.find(">.infos .actions .accept>span").text("Foi produzido");
+                $element.find(">.infos .actions .refuse>span").text("Cancelar");
+
+                $element.find(".history>.step.accept").addClass("success");
+                $element.find(".history>.step.production").addClass("active");
+
+                $element.find(".history>.step.accept .title").text("Aceito");
+                $element.find(".history>.step.production .title").text("Aguardando produção");
+                $element.find(".history>.step.delivery .title").text("Aguardando entrega");
+
+                $element.find(".history>.step.accept .date").text(DateTimeFormat(order.status_times.find(status => status.status == 1)?.createdAt));
+            } else if (status == 2) {
+                $element.find(">.infos .actions .accept>span").text(order.delivery_type == "withdrawal" ? "Foi retirado" : "Saiu para a entrega");
+                $element.find(">.infos .actions .refuse>span").text("Cancelar");
+
+                $element.find(".history>.step.accept").addClass("success");
+                $element.find(".history>.step.production").addClass("success");
+                $element.find(".history>.step.delivery").addClass("active");
+
+                $element.find(".history>.step.accept .title").text("Aceito");
+                $element.find(".history>.step.production .title").text("Produzido");
+                $element.find(".history>.step.delivery .title").text("Aguardando entrega");
+
+                $element.find(".history>.step.accept .date").text(DateTimeFormat(order.status_times.find(status => status.status == 1)?.createdAt));
+                $element.find(".history>.step.production .date").text(DateTimeFormat(order.status_times.find(status => status.status == 2)?.createdAt));
+            } else if (status == 3) {
+                $element.find(">.infos .actions .accept>span").text("Foi entregue");
+                $element.find(">.infos .actions .refuse>span").text("Cancelar");
+
+                $element.find(".history>.step.accept").addClass("success");
+                $element.find(".history>.step.production").addClass("success");
+                $element.find(".history>.step.delivery").addClass("active");
+
+                $element.find(".history>.step.accept .title").text("Aceito");
+                $element.find(".history>.step.production .title").text("Produzido");
+                $element.find(".history>.step.delivery .title").text("Saiu para entrega");
+
+                $element.find(".history>.step.accept .date").text(DateTimeFormat(order.status_times.find(status => status.status == 1)?.createdAt));
+                $element.find(".history>.step.production .date").text(DateTimeFormat(order.status_times.find(status => status.status == 3)?.createdAt));
+            } else if (status == 10) {
+                $element.find(">.infos .actions").hide();
+
+                $element.find(".history>.step.accept").addClass("success");
+                $element.find(".history>.step.production").addClass("success");
+                $element.find(".history>.step.delivery").addClass("success");
+
+                $element.find(".history>.step.accept .title").text("Aceito");
+                $element.find(".history>.step.production .title").text("Produzido");
+                $element.find(".history>.step.delivery .title").text("Entregue");
+
+                $element.find(".history>.step.accept .date").text(DateTimeFormat(order.status_times.find(status => status.status == 1)?.createdAt));
+                $element.find(".history>.step.production .date").text(DateTimeFormat(order.status_times.find(status => status.status == 3)?.createdAt));
+                $element.find(".history>.step.delivery .date").text(DateTimeFormat(order.status_times.find(status => status.status == 10)?.createdAt));
+            }
+
+            if (order.status < 0) {
+                $element.find(".history>.step.active .title").text("Recusado");
+                $element.find(".history>.step.active .date").text(DateTimeFormat(order.dt_refuse));
+                $element.find(".history>.step.active").removeClass("active").addClass("refused");
+
+                $element.find(">.infos .actions .accept>span").text("Aceitar pedido");
+                $element.find(">.infos .actions .refuse").hide();
+            }
+
+            if (actions && company.integrated) {
+                $element.find(">.infos .actions").html(`<div class="integrated">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Integração ativada!</span>
+                </div>`);
+            }
+
+            if (!actions) {
+                $element.find(">.infos .actions").hide();
+            }
+        }
+
+        function DateTimeFormat(date) {
+            if (!date) return "";
+
+            return new Date(date).toLocaleString();
+        }
+
+        $("#img").attr("src", company.image.medium || `${api_url}/static/images/no-image.svg`);
+        $("#orders_count").text(orders.length);
+
+        const start_date = new Date(range_dates.start);
+        const end_date = new Date(range_dates.end);
+
+        $(".period .from>.date").text(`${start_date.getDate()} de ${start_date.toLocaleDateString("pt-BR", { month: "short" })}`);
+        $(".period .to>.date").text(`${end_date.getDate()} de ${end_date.toLocaleDateString("pt-BR", { month: "short" })}`);
+
+        for (const order of orders) {
+            const $element = $("<div>");
+            LoadOrderOnElement($element, order, false);
+            $("#list-orders").append($element);
+            $element.find(".info").append(`<span class="created_date">${new Date(order.createdAt).toLocaleString("pt-BR")}</span>`);
+        }
+
+        loadedChecker();
+
+        document.currentScript.remove();
+        document.getElementById("font_awesome").remove();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        @page {
+            margin: 0;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+            }
+        }
+
+        @media not print {
+            html {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                background: rgb(32, 32, 32);
+            }
+        }
+
+        body {
+            background: white;
+            margin: 0;
+            display: inline-block;
+            font-family: monospace;
+            font-weight: bold;
+            width: 100%;
+            padding: 5px;
+            font-size: 11.6px;
+            min-width: max-content;
+
+            --columns-count: <%- parseInt(printer?.size || 35) %>
+        }
+
+        pre {
+            margin: 0;
+            white-space: break-spaces;
+            word-break: break-word;
+            overflow: hidden;
+            width: calc(6.97px * var(--columns-count));
+        }
+    </style>
+    <title>Via de controle (<%= order.order_company_sequence %>)</title>
+</head>
+
+<html>
+
+<body>
+<%
+    let lines = [];
+    const columns_count = printer?.size || 35;
+
+    lines.push(" ");
+
+    lines.push(CenterText("VIA DE CONTROLE", columns_count));
+    lines.push(CenterText(`PEDIDO ${order.order_company_sequence}`, columns_count));
+
+    lines.push(" ");
+
+    lines.push(`CLIENTE: {fill} ${order.name_client}`);
+    lines.push(`TELEFONE: {fill}${order.phone_client}`);
+
+    lines.push(" ");
+
+    lines.push(CenterText("ITENS", columns_count, "="));
+
+    for(const item of order.items) {
+        lines.push(`${item.quantity}x ${item.product.name} {fill} ${MoneyFormat(item.price * item.quantity, false)}`);
+
+        const total_flavors=item.pizza_flavors?.reduce((accumulator, flavor)=> accumulator + flavor.quantity, 0); 
+
+        if(!!total_flavors) { 
+            lines.push(`| Sabores`);
+            
+            for(const flavor of item.pizza_flavors) {
+                const quantity = item.pizza_flavors.length> 1 ? `${flavor.quantity}/${total_flavors}` : `${(company.multiply_complements ? flavor.quantity * item.quantity : flavor.quantity) || 1}x`;
+                let total = flavor.price * flavor.quantity;
+
+                if (item.product.pizza_price_rule === "average") {
+                    total = (flavor.price / total_flavors) * flavor.quantity;
+                } else if (item.product.pizza_price_rule === "biggest_price") {
+                    const biggest_price = Math.max(...item.pizza_flavors.map(item => item.price));
+                    total = (biggest_price / total_flavors) * flavor.quantity;
+                }
+
+                lines.push(` |- ${quantity} ${flavor.name} {fill} ${MoneyFormat(total, false)}`);
+            } 
+        }
+
+        for (const complement of item.complements || []) {
+            lines.push(` | ${complement.name.toUpperCase()}`);
+
+            for (const complement_item of complement.items || []) {
+                const quantity = `${complement.required===false ? "+ " : "" }${(company.multiply_complements ? complement_item.quantity * item.quantity : complement_item.quantity) || 1}x`;
+
+                lines.push(` |- ${quantity} ${complement_item.name} {fill} ${MoneyFormat(complement_item.price * complement_item.quantity * item.quantity, false)}`);
+            }
+        }
+
+        if(item.observation) lines.push(` > ${item.observation}`);
+
+        lines.push(" ");
+    } 
+
+    lines.push(`SUBTOTAL: {fill} ${MoneyFormat(order.subtotal, false)}`);
+    lines.push(`TAXA DE ENTREGA: {fill} ${MoneyFormat(order.delivery_cost, false)}`);
+    lines.push(`DESCONTO: {fill} ${MoneyFormat(order.discount + order.coupon_discount, false)}`);
+    lines.push(`TOTAL: {fill} ${MoneyFormat(order.total, false)}`);
+
+    lines.push(CenterText("", columns_count, "="));
+
+    lines.push(" ");
+
+    if(order.delivery_type !="withdrawal") {
+        lines.push(`ENDEREÇO: {fill} ${`${order.street_name}, ${order.street_number} - ${order.neighborhood}, ${order.city} - ${order.state}`}`);
+
+        if(!!order.reference) lines.push(`REFERENCIA: {fill} ${order.reference}`);
+        if(!!order.complement) lines.push(`COMPLEMENTO: {fill} ${order.complement}`);
+    } else {
+        lines.push(`TIPO: {fill} Retirada`);
+    }
+
+    lines.push(`FORMA DE PAGTO: {fill} ${TranslatePaymentMethod(order.payment_method)}`);
+    if(order.cash_change > 0) lines.push(`TROCO: {fill} ${MoneyFormat(order.cash_change - order.total)}`);
+    if(!!order.observation) lines.push(`OBS: {fill} ${order.observation}`);
+
+    if(order.scheduledAt) lines.push(`AGENDADO PARA: {fill} ${new Date(order.scheduledAt).toLocaleDateString("pt-BR", { hour: '2-digit', minute: '2-digit' })}`);
+    lines.push(`DATA PEDIDO: {fill} ${new Date(order.createdAt).toLocaleDateString("pt-BR", { hour: '2-digit', minute: '2-digit' })}`);
+    lines.push(`DATA IMPRESAO: {fill} ${new Date().toLocaleString()}`);
+
+    lines.push(" ");
+    
+    const text = NormalizeText(lines.map(line => {
+        if(line.includes("{fill}")) {
+            const spaces_count = columns_count - (line.length - 6);
+            const spaces = Array.from({ length: spaces_count > 0 ? spaces_count : 0 }, () => " ").join("");
+
+            line = line.replace(/{fill}/g, spaces);
+        }
+
+        return line;
+    }).join("\n"));
+%>
+<pre><%= text %></pre>
+</body>
+
+</html>
