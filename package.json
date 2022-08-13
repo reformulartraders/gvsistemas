@@ -1,0 +1,57 @@
+{
+  "name": "pop-pedidos",
+  "productName": "GV Sistemas",
+  "version": "1.6.9",
+  "private": true,
+  "main": "index.js",
+  "author": {
+    "name": "GV Sistemas",
+    "email": "suporte@poppedidos.com.br"
+  },
+  "license": "ISC",
+  "description": "Faça suas vendas online, facilitando a divulgação de sua empresa e seus produtos na internet.",
+  "scripts": {
+    "start": "set NODE_ENV=development&&electron . --enable-logging",
+    "start:dev": "set NODE_ENV=development&&electron . --enable-logging",
+    "start:prod": "set NODE_ENV=production&&electron . --enable-logging",
+    "start:hidden": "set NODE_ENV=production&&electron . --enable-logging --hidden",
+    "build": "electron-builder build --win --publish never",
+    "publish": "electron-builder build --win --publish always"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joaovitmac/pop-client.git"
+  },
+  "build": {
+    "appId": "br.com.poppedidos",
+    "publish": [
+      "github"
+    ],
+    "win": {
+      "icon": "./assets/images/logo.png",
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "ia32",
+          "x64"
+        ]
+      }
+    }
+  },
+  "devDependencies": {
+    "electron": "^18.0.4",
+    "electron-builder": "^23.3.3",
+    "electron-packager": "^15.4.0"
+  },
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "electron-log": "^4.3.5",
+    "electron-reload": "^1.5.0",
+    "electron-updater": "^4.3.9",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "node-fetch": "^2.6.1",
+    "uuid": "^8.3.2",
+    "ws": "^7.5.1"
+  }
+}
